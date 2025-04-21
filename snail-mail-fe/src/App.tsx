@@ -1,11 +1,16 @@
+import { useState } from 'react'
 import './App.css'
 import { Inbox } from './components/Inbox'
 import 'bootstrap/dist/css/bootstrap.css'
+import { Compose } from './components/Compose'
 
 //Welcome to App.tsx! This is the main component of our React App
 //Any other components we create will rendered here before they are visible
 function App() {
-  
+
+  //useState object to hold showCompose, and a toggler to switch its value between true/false
+  const [showCompose, setShowCompose] = useState<boolean>(false)
+  const toggleShowCompose = (() => {setShowCompose(!showCompose)})
 
   {/* the return() of a component is just the view. what the component looks like */}
   return (
@@ -17,6 +22,16 @@ function App() {
 
       {/* Render the InboxComponent */}
       <Inbox/>
+
+      {/* We'll define a boolean variable called showCompose.
+          If showCompose is true, show the Compose component.
+          If showCompose is false, show the button that opens the Compose component */}
+      {showCompose ? <Compose onClose={toggleShowCompose}/> : ""}
+
+      {!showCompose ? 
+      <button className="btn btn-sm btn-outline-primary" onClick={toggleShowCompose}>Compose Email</button>
+      : ""}
+
 
     </div>
   )
