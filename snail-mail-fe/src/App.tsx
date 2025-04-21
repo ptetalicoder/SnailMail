@@ -1,4 +1,5 @@
 import './App.css'
+import { Inbox } from './components/Inbox'
 
 //Welcome to App.tsx! This is the main component of our React App
 //Any other components we create will rendered here before they are visible
@@ -14,6 +15,7 @@ function App() {
       </nav>
 
       {/* Render the InboxComponent */}
+      <Inbox/>
 
     </div>
   )
