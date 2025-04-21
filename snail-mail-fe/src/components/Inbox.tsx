@@ -2,6 +2,7 @@
 //Components contain logic AND view in the same file
 //It's like we merged an HTML file with the JS file that gives it functionality
 
+import axios from "axios"
 import { useEffect, useState } from "react"
 import { Table } from "react-bootstrap"
 
@@ -39,12 +40,17 @@ export const Inbox:React.FC = () => {
 
 
     //Function that gathers our inbox (Will be a real HTTP request in a bit)
-    const getInbox = () => {
+    const getInbox = async () => {
 
-        
+        try{
+            //Send an axios GET request to the API to get inbox mail (yes, we can use fetch too!)
+            const response = await axios.get("http://localhost:8080/mail")
 
-        //Use the mutator (setInbox) to set this data to our "inbox" state variable
-        //setInbox()
+            //Use the mutator (setInbox) to set this data to our "inbox" state variable
+            setInbox(response.data)
+        } catch {
+            alert("There was a problem when fetching your inbox! Please try again later")
+        }
 
     }
 
@@ -85,6 +91,5 @@ export const Inbox:React.FC = () => {
 
         </div>
     )
-    //TODO: make an actual HTTP request for the inbox data
 
 }
