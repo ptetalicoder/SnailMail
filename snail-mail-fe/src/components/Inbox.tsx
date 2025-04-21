@@ -41,30 +41,10 @@ export const Inbox:React.FC = () => {
     //Function that gathers our inbox (Will be a real HTTP request in a bit)
     const getInbox = () => {
 
-        //For now, we'll just define a couple fake mail objects 
-        const fakeInbox = [
-            {
-                sender:"guy@snailmail.com",
-                recipient:"me@snailmail.com",
-                subject:"I luv React",
-                body:"React is a library for Single Page Applications"
-            },
-            {
-                sender:"guy@snailmail.com",
-                recipient:"me@snailmail.com",
-                subject:"I luv Components",
-                body:"Components are reuseable files that store a view with its logic"
-            },
-            {
-                sender:"guy@snailmail.com",
-                recipient:"me@snailmail.com",
-                subject:"I luv hooks",
-                body:"React has entities called 'hooks' that help us do common things in components"
-            }
-        ]
+        
 
         //Use the mutator (setInbox) to set this data to our "inbox" state variable
-        setInbox(fakeInbox)
+        //setInbox()
 
     }
 
@@ -74,7 +54,14 @@ export const Inbox:React.FC = () => {
 
             <h3 className="font-monospace">Inbox</h3>
 
-            <Table hover>
+            {/* CONDITIONAL RENDERING
+            If there's no mail, render a message that says there's no mail 
+            If there IS mail, render the table with the inbox rows*/}
+
+            {inbox.length === 0 ? (
+                <div className="alert alert-primary">No Mail! You're all caught up!</div>)
+            : (
+                <Table hover>
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -94,6 +81,7 @@ export const Inbox:React.FC = () => {
                     {/* Why () intead of {} for the arrow function? this lets us implicitly return the view, otherwise we'd have to define it with a return() */}
                 </tbody>
             </Table>
+            )}
 
         </div>
     )
