@@ -90,6 +90,7 @@ export const Inbox:React.FC = () => {
                             <td>{mail.body}</td>
                         </tr>
                     ))}
+                    {/* Why () intead of {} for the arrow function? this lets us implicitly return the view, otherwise we'd have to define it with a return() */}
                 </tbody>
             </table>
 
