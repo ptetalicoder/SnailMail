@@ -1,5 +1,6 @@
 import './App.css'
 import { Inbox } from './components/Inbox'
+import 'bootstrap/dist/css/bootstrap.css'
 
 //Welcome to App.tsx! This is the main component of our React App
 //Any other components we create will rendered here before they are visible
@@ -10,8 +11,8 @@ function App() {
   return (
     <div>
       {/* Simple Top Navbar */}
-      <nav>
-        <h2>🐌 SnailMail 🐌</h2>
+      <nav className="border-bottom mb-5">
+        <h2 className="font-monospace">🐌 SnailMail 🐌</h2>
       </nav>
 
       {/* Render the InboxComponent */}

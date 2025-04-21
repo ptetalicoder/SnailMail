@@ -3,6 +3,7 @@
 //It's like we merged an HTML file with the JS file that gives it functionality
 
 import { useEffect, useState } from "react"
+import { Table } from "react-bootstrap"
 
 //Interfaces in React/TS help us model data. It's like making a custom datatype
 interface Mail {
@@ -71,9 +72,9 @@ export const Inbox:React.FC = () => {
     return(
         <div>
 
-            <h3>Inbox</h3>
+            <h3 className="font-monospace">Inbox</h3>
 
-            <table>
+            <Table hover>
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -92,9 +93,10 @@ export const Inbox:React.FC = () => {
                     ))}
                     {/* Why () intead of {} for the arrow function? this lets us implicitly return the view, otherwise we'd have to define it with a return() */}
                 </tbody>
-            </table>
+            </Table>
 
         </div>
     )
+    //TODO: make an actual HTTP request for the inbox data
 
 }
