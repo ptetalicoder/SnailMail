@@ -26,12 +26,8 @@ function App() {
       {/* We'll define a boolean variable called showCompose.
           If showCompose is true, show the Compose component.
           If showCompose is false, show the button that opens the Compose component */}
-      {showCompose ? <Compose onClose={toggleShowCompose}/> : ""}
-
-      {!showCompose ? 
-      <button className="btn btn-sm btn-outline-primary" onClick={toggleShowCompose}>Compose Email</button>
-      : ""}
-
+      {showCompose ? <Compose onClose={toggleShowCompose}/> 
+      : <button className="btn btn-sm btn-outline-primary" onClick={toggleShowCompose}>Compose Email</button>}
 
     </div>
   )

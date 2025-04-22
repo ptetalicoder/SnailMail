@@ -2,6 +2,7 @@
 //Takes 2 Values:
     //1) The function that closes this component
 
+import axios from "axios"
 import { useState } from "react"
 
     //TODO: 2) [We'll talk about this when we talk about Cypress]
@@ -31,6 +32,8 @@ export const Compose:React.FC<Props> = ({onClose}) => {
     const handleInputChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         
         //Storing the name and value attributes from the changed element for ease of use
+        //[name] can be either of the 3 inputs in the Compose component. This ugly code lends flexibility
+        //This syntax becomes way more necessary when we have a ton of input fields
         const name = event.target.name //name is an attribute we set in the inputs
         const value = event.target.value //value is whatever value is in the input box
 
@@ -42,11 +45,20 @@ export const Compose:React.FC<Props> = ({onClose}) => {
 
     const sendEmail = async () => {
 
-        //TODO: send email (POST request)
+        //TODO: error handling 
 
-        alert("Sent Mail!")
+        try{
+            //send email (POST request)
+            const response = await axios.post("http://localhost:8080/mail", mailToSend)
 
-        onClose() //close the component after sending mail
+            console.log(response.data) //just so we can see this in console
+
+            alert("Sent Mail to: " + response.data.recipient)
+
+            onClose() //close the component after sending mail
+        } catch {
+            alert("Something went wrong sending your mail!")
+        }
 
     }
 
