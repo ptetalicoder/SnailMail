@@ -45,9 +45,20 @@ export const Compose:React.FC<Props> = ({onClose}) => {
 
     const sendEmail = async () => {
 
-        //TODO: error handling 
-
         try{
+
+            //Error handling
+                //Check that subject is not empty
+                //Check that recipient is a valid email address (follows x@y format)
+            //TODO: probably cut all this as we turn our inputs into a form and validate it that way
+            if(mailToSend.subject.trim() === ""){
+                throw Error("Subject cannot be empty")
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailToSend.recipient)) {
+                throw new Error("Recipient doesn't appear to be a valid email address");
+            }
+
             //send email (POST request)
             const response = await axios.post("http://localhost:8080/mail", mailToSend)
 
@@ -56,8 +67,13 @@ export const Compose:React.FC<Props> = ({onClose}) => {
             alert("Sent Mail to: " + response.data.recipient)
 
             onClose() //close the component after sending mail
-        } catch {
-            alert("Something went wrong sending your mail!")
+        } catch (e) {
+            //e is "unknown" type here - so we need to check its type before we can do Error-related stuff
+            if(e instanceof Error){
+                alert(e.message)
+            } else {
+                alert("Some unknown error occurred!")
+            }
         }
 
     }
@@ -68,8 +84,9 @@ export const Compose:React.FC<Props> = ({onClose}) => {
             <h6 className="border-bottom position-absolute top-0 start-0 m-2">Compose Email</h6>
             <button onClick={onClose} className="btn-close position-absolute top-0 end-0 m-1"></button>
 
+            {/* TODO: make this a form so we can have required fields and clean up the sendMail function */}
             <div>
-                <input className="form-control border-bottom border-0 shadow-none" placeholder="recipient" name="recipient" onChange={handleInputChange}/>
+                <input className="form-control border-bottom border-0 shadow-none" placeholder="recipient" name="recipient" type="email" onChange={handleInputChange}/>
             </div>
 
             <div>
