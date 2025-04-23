@@ -5,8 +5,8 @@
 
 /* TEST SUITE OVERVIEW 
    
-    1)
-    2)
+    1) Check that a real, successful GET request to the backend works as expected
+    2) 
     3)
     4)
     5)
@@ -50,8 +50,20 @@ describe("Inbox Component Tests", () => {
 
     })
 
- 
+    //test 2------------
+    it("Shows an empty inbox message when there are no emails", () => {
 
-    //-----------
+        //This time, we'll manipulate the HTTP Response to have an empty response body
+        cy.intercept("GET", "http://localhost:8080/mail", {
+            statusCode: 200,
+            body: []
+        })
+
+        //Check that the "no mail" message is there, and the table isn't 
+        cy.contains("No Mail! You're all caught up!").should("be.visible")
+        cy.get("table").should("not.exist")
+        cy.get("button").contains("Compose Email").should("be.visible")
+
+    })
 
 })
