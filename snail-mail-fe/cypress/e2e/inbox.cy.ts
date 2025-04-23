@@ -6,9 +6,9 @@
 /* TEST SUITE OVERVIEW 
    
     1) Check that a real, successful GET request to the backend works as expected
-    2) 
-    3)
-    4)
+    2) Check that a real, successful GET request to the backend works as expected when there is no mail
+    3) Check that a real, failed GET request is handled as expected
+    4) Check that a fake GET inbox request (with mock data) to the backend works as expected
     5)
 
 */
@@ -65,5 +65,25 @@ describe("Inbox Component Tests", () => {
         cy.get("button").contains("Compose Email").should("be.visible")
 
     })
+
+    //test 3------------
+    it("Displays an error alert and shows the 'no mail' message wif fetch inbox request fails", () => {
+
+        //Force an error response after intercepting the HTTP response (note the shorthand for the URL)
+        cy.intercept("GET", "/mail", {
+            forceNetworkError: true //fail the test, triggering the catch block in the component
+        })
+
+        //Stub the alert popup so Cypress doesn't get interrupted
+        //"Stub?" we're faking the alert trigger so Cypress can track it, but not actually cause a popup
+        cy.on("window:alert", cy.stub().as("alert"))
+
+        //Confirm the alert() got triggered with the appropriate error message
+        cy.get("@alert").should("have.been.calledWith", "There was a problem when fetching your inbox! Please try again later")
+
+    })
+
+    //test 4------------------
+    
 
 })
