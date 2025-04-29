@@ -116,6 +116,14 @@ describe("Inbox Component Tests", () => {
         //can we chain should()s like this? looks like it
         //SHOULD we? sure, maybe put them on different lines like seen above
 
+        //Showing the 3 debugging commands - These ONLY show up in the GUI
+
+        cy.pause() //pauses the test runner, and we have to manually resume it
+
+        cy.debug() //creates a debugger breakpoint
+
+        cy.log("I am a log - I am only visible from the GUI")
+
     })
 
 })
