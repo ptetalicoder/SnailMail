@@ -36,5 +36,26 @@ test("user can send email via compose component", async ({page}) => {
     const jsonResponse = await response.json();
     expect(jsonResponse.recipient).toBe("test@snailmail.com")
 
-
 })
+
+//Test 2: Check that the appropriate alert is sent when an email is sent with no Subject
+test("shows alert when trying to send mail with no subject", async ({page}) => {
+
+    //Fill only the Recipient and Body, leaving Subject empty
+    //(Note we're using getByPlaceholder this time just to show it)
+    await page.getByPlaceholder("recipient").fill("test@snailmail.com")
+    await page.getByPlaceholder("Write your message here...").fill("This won't send!")
+
+    //Listen for another dialog event - this should be our "no subject" alert()
+    page.once('dialog', async (dialog) => {
+        expect(dialog.message()).toEqual("Subject cannot be empty")
+        //leaving out the accept() since it happens automatically in Playwright
+    })
+
+    //Maybe not necessary but just wanna show some more assertions - make sure subject is empty
+    await expect(page.getByPlaceholder("subject")).toBeEmpty()
+
+    //Click send to trigger the alert
+    await page.getByText("Send").click
+
+}) 
