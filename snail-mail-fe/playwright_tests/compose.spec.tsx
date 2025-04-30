@@ -113,3 +113,17 @@ test("shows Network Error alert is backend is down on mail send", async ({page})
     await page.getByRole('button', {name: "Send"}).click()
 
 })
+
+//Test 5: compose component goes away and "compose email" reappears when "x" is clicked
+test("close compose component, render Compose Email button when X is clicked", async ({page}) => {
+
+    //Click the X button - using locator() directly just to show it
+    await page.locator('.btn-close').click() //selecting by the element with className = "btn-close"
+
+    //Assert that Compose.tsx is no longer in the DOM - note the use of the .not property
+    await expect(page.getByTestId("compose-component")).not.toBeVisible()
+
+    //Assert that the "Compose Email" button reappears
+    await expect(page.getByRole("button", {name:"Compose Email"})).toBeVisible()
+
+})
