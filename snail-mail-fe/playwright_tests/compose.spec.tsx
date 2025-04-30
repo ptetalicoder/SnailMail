@@ -5,7 +5,9 @@ import {test, expect, request} from '@playwright/test'
 test.beforeEach(async ({ page }) => {
     await page.goto('/') //Playwright goes to the baseURL defined in our config file 
     await page.getByRole('button', {name: "Compose Email"}).click() //Open Compose.tsx
-    //TODO: Ben will find a preferable way to check for Compose.tsx existence 
+    
+    //an assertion in the beforeEach - make sure compose exists
+    await expect(page.getByTestId("compose-component")).toBeVisible()
 })
 
 //Test 1: Make sure user can compose and send a valid email ----------
@@ -89,3 +91,25 @@ test("backend rejects emails with missing recipient", async () => {
 
 })
 
+//Test 4: test for the appropriate alert if the backend is down (mocking this request!!)
+test("shows Network Error alert is backend is down on mail send", async ({page}) => {
+
+    //Intercept the HTTP request (route()), and force it to fail (abort())
+    await page.route("**/mail", route => {
+        route.abort() //Simulating the server being down, or something causing the request to fail
+    })
+
+    //Fill out a valid form (we don't want any front end checks to run first)
+    await page.getByRole("textbox", {name: "recipient"}).fill("test@snailmail.com")
+    await page.getByRole("textbox", {name: "subject"}).fill("anything")
+    await page.getByRole("textbox", {name: "body"}).fill("anything at all")
+
+    //Listen for the alert and assert the appropriate message
+    page.once('dialog', async (dialog) => {
+        expect(dialog.message()).toContain("Network Error")
+    })
+
+    //Attempt to send the mail (which should get aborted due to our mocking in the request
+    await page.getByRole('button', {name: "Send"}).click()
+
+})
