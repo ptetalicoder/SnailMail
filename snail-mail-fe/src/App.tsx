@@ -28,9 +28,9 @@ function App() {
 
       {/* Routes - these components will only render when their endpoint is in the URL */}
       <Routes>
-          <Route path="/" element={<Inbox/>}/>
+          <Route path="/" element={<Inbox/>}/> {/* This component renders by default */}
           <Route path="profile" element={<UserProfile/>}/>
-          <Route path="*" element={<ErrorPage/>}/>
+          <Route path="*" element={<ErrorPage/>}/> {/* This component renders for any URL endpoint that isn't listen in the Routes */}
       </Routes>
 
       {/* We'll define a boolean variable called showCompose.

@@ -127,3 +127,23 @@ test("close compose component, render Compose Email button when X is clicked", a
     await expect(page.getByRole("button", {name:"Compose Email"})).toBeVisible()
 
 })
+
+//Test 6: make sure the error page renders when visiting an invalid URL
+//NOTE: not really a compose component thing... but I'm putting it here anyway
+test("error page component renders when invalid URL is visited", async ({browser}) => {
+
+    //Create a new Browser context - isolated from the actual browser the app is running on
+    const browserContext = await browser.newContext()
+
+    //Create a new page based on this isolated Browser Context
+    const page = await browserContext.newPage()
+
+    //use the page to navigate to an invalid URL!
+    await page.goto("http://localhost:5177/invalidURL")
+
+    //Assert that our error page shows up
+    await expect(page.getByText("Welcome to the Error Page")).toBeVisible()
+
+    //good practice - close your context once you're done with it
+    await browserContext.close()
+})
