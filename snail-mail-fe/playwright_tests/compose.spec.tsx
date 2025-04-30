@@ -1,4 +1,4 @@
-import {test, expect} from '@playwright/test'
+import {test, expect, request} from '@playwright/test'
 
 //Before each test, go to our main page (render the App.tsx)
 //Then, click open the Compose Component
@@ -59,3 +59,33 @@ test("shows alert when trying to send mail with no subject", async ({page}) => {
     await page.getByText("Send").click
 
 }) 
+
+//Test 3: The backend sends an erroneous response when mail is sent with no recipient
+test("backend rejects emails with missing recipient", async () => {
+
+    //Recall that the backend should send a null body and a 400 status code 
+    //IF the recipient field is empty.
+    //Yes, the front end checks for this, but we'll send a manual HTTP request to bypass that check
+
+    //Make a new ApiRequestContext so we can directly send an HTTP request 
+    const requestContext = await request.newContext()
+
+    //Directly send a POST with an email object - this returns an ApiResponse object
+    const response = await requestContext.post("http://localhost:8080/mail", {
+        data:{
+            sender: "me@snailmail.com",
+            recipient: "",
+            subject: "The backend wont allow this",
+            body: "Test test test"
+        }
+    })
+
+    //make sure we get a 400 status code (bad request)
+    expect(response.status()).toBeGreaterThanOrEqual(400)
+
+    //make sure the response body is null
+    const body = await response.text() //turn it into text (can't parse JSON from null)
+    expect(body).toBe("")
+
+})
+
