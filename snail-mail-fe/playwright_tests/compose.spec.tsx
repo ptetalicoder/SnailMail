@@ -147,3 +147,21 @@ test("error page component renders when invalid URL is visited", async ({browser
     //good practice - close your context once you're done with it
     await browserContext.close()
 })
+
+//Test 7: Tests logs the correct response data - example of using ConsoleMessage
+test("logs correct data from the backend after sending an email", async ({page}) => {
+
+    //Fill out a valid form
+    await page.getByRole("textbox", {name: "recipient"}).fill("test@snailmail.com")
+    await page.getByRole("textbox", {name: "subject"}).fill("anything")
+    await page.getByRole("textbox", {name: "body"}).fill("anything at all")
+
+    //Listen for console messages, and assert the printed data
+    page.on('console', message => {
+        expect(message.text()).toEqual("{sender: me@snailmail.com, recipient: test@snailmail.com, subject: anything, body: anything at all}")
+    })
+
+    //Click send so that the console event actually trigger
+    await page.getByRole('button', {name: "Send"}).click()
+
+})
