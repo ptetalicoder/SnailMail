@@ -176,10 +176,10 @@ test("logs correct data from the backend after sending an email", async ({page})
 })
 
 //Test 1.5: Make sure user can compose and send a valid email (NOW WITH A .HAR FILE!)
-test("user can send email via compose component", async ({browser}) => {
+test("user can send email via compose component... NOW WITH .HAR FILE", async ({browser}) => {
 
     //Create a new context so we can record a .HAR file
-    const broswerContext = await browser.newContext({
+    const browserContext = await browser.newContext({
         recordHar: {
             path: "har-files/sendmail.har", //the folder/file the .HAR file will reside in,
             content: "embed" //embed the response bodies into the .HAR file
@@ -187,7 +187,7 @@ test("user can send email via compose component", async ({browser}) => {
     })
 
     //since the BrowserContext ignores the beforeEach, we have a little setup to do
-    const page = await broswerContext.newPage()
+    const page = await browserContext.newPage()
     await page.goto('/') //Playwright goes to the baseURL defined in our config file 
     await page.getByRole('button', {name: "Compose Email"}).click() //Open Compose.tsx
 
@@ -216,5 +216,8 @@ test("user can send email via compose component", async ({browser}) => {
     const jsonResponse = await response.json();
     expect(jsonResponse.recipient).toBe("test@snailmail.com")
     
+    //This command closes the context, which records the HAR file
+    await browserContext.close()
+
     //TODO: This doesn't work in Firefox, json parsing issues. 
 })
