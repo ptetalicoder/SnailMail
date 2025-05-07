@@ -63,6 +63,6 @@ class SnailMailBeApplicationTests {
 
 	//TODO: sendMail fails with subject > 20 characters
 
-	
+
 
 }
