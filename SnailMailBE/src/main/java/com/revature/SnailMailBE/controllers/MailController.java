@@ -45,17 +45,10 @@ public class MailController {
     @PostMapping
     public ResponseEntity<Mail> sendMail(@RequestBody Mail mail) {
 
-        //Error handling to make sure it's valid mail (just a couple, to get the idea)
-        if(mail.getRecipient() == null || mail.getRecipient().isBlank()){
-            //400 level status code, and empty response body
-            return ResponseEntity.badRequest().body(null);
-        }
-        //TODO: check the other fields, and stuff like is the email address is valid
+        //Send the mail to the service to be processed, and return the result.
 
-        //In a real app, we'd send this deeper into the app to hit the database
-
-        //For now, we'll just return the mail to the user
-        return ResponseEntity.ok().body(mail);
+        //Note that I'm doing this in a one-liner. You don't HAVE to
+        return ResponseEntity.ok().body(mailService.sendMail(mail));
 
     }
 

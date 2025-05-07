@@ -1,6 +1,7 @@
 package com.revature.SnailMailBE.services;
 
 import com.revature.SnailMailBE.models.Mail;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -25,6 +26,28 @@ public class MailService {
         } else {
             return inbox;
         }
+
+    }
+
+    public Mail sendMail(Mail mail){
+
+        //Some basic checks to make sure the mail is valid
+        if(mail.getRecipient() == null || mail.getRecipient().isBlank()){
+            //throw an Exception if Recipient is null or blank
+            throw new IllegalArgumentException("Recipient cannot be empty!");
+        }
+        //TODO: check the other fields, and stuff like is the email address is valid
+
+        //Another check to make sure the subject is > 20 characters
+        if(mail.getSubject().length() > 20){
+            //throw an Exception is Subject is too long
+            throw new IllegalArgumentException("Save it for the message body, buddy");
+        }
+
+        //Imagine we send a request to the database here to "send" the mail
+
+        //Return the valid mail back to the controller
+        return mail;
 
     }
 
