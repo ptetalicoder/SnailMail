@@ -2,6 +2,7 @@ package com.revature.SnailMailBE.controllers;
 
 import com.revature.SnailMailBE.models.Mail;
 import com.revature.SnailMailBE.services.MailService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,15 @@ public class MailController {
         //Note that I'm doing this in a one-liner. You don't HAVE to
         return ResponseEntity.ok().body(mailService.sendMail(mail));
 
+    }
+
+
+    //Spring MVC ExceptionHandler - super generic one to help with responses/tests
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Exception> handleException(Exception e){
+        //Return the Exception in the response body with a 400 so the FE can handle it
+        System.out.println(e.getMessage());
+        return ResponseEntity.badRequest().body(e); //400 status code
     }
 
 }

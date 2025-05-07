@@ -2,12 +2,14 @@ package com.revature.SnailMailBE.services;
 
 import com.revature.SnailMailBE.models.Mail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 //The service layer is responsible for business logic
 //Business logic includes stuff like data validation, and data formatting.
 //The service makes calls to the database layer and makes sure inputs are valid
+@Service //Make this class a bean so we can inject it in the controller
 public class MailService {
 
     public List<Mail> getInbox(){
