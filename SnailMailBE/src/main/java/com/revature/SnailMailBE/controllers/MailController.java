@@ -1,6 +1,8 @@
 package com.revature.SnailMailBE.controllers;
 
 import com.revature.SnailMailBE.models.Mail;
+import com.revature.SnailMailBE.services.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +14,30 @@ import java.util.List;
 @CrossOrigin //Allows requests from any origin (this will let our FE/BE communicate)
 public class MailController {
 
+    //Because the MailController depends on the Service, we must inject it
+    //We do this so we can use its methods
+    private MailService mailService;
+
+    //Constructor Injection - best practice for autowiring
+    @Autowired
+    public MailController(MailService mailService) {
+        this.mailService = mailService;
+    }
+
     //This method sends a user's inbox back to them (a List of Mail objects)
     @GetMapping
     public ResponseEntity<List<Mail>> getInbox(){
 
-        //In a real app, this would send a request to the database to get the user's inbox mail records
-        //For now, we'll return a hardcoded list of Mail
-        List<Mail> inbox = List.of(
-                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I am a snail"),
-                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I have a shell"),
-                new Mail("slug@snailmail.com", "Hey", "me@snailmail.com", "I am a slug"),
-                new Mail("clam@snailmail.com", "Hey", "me@snailmail.com", "...")
-        );
+        //Send a request to the service layer to get the inbox
+        List<Mail> inbox = mailService.getInbox();
 
         //Easily configure and return an HTTP response thanks to ResponseEntity
-        //200 level status code, and inbox as the response body
-        return ResponseEntity.ok().body(inbox);
+        //200 level status code, or 204 status code if inbox is empty
+        if(inbox == null){
+            return ResponseEntity.noContent().build(); //204 status code
+        } else {
+            return ResponseEntity.ok().body(inbox); //200 status code
+        }
 
     }
 
