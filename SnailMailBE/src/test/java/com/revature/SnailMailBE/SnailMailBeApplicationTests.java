@@ -1,6 +1,8 @@
 package com.revature.SnailMailBE;
 
 import com.revature.SnailMailBE.models.Mail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -105,5 +107,34 @@ class SnailMailBeApplicationTests {
 				.body("message", equalTo("Save it for the message body, buddy"));
 	}
 
+	//Fifth Test - login success (also adding two logging filters to this one!)
+	@Test
+	void successfulLoginCreatesNewSession(){
+
+		//Define the JSON object for the request body
+		String loginJson = """
+				{
+					"username": "username",
+					"password": "password"
+				}
+				""";
+
+		//Send the POST request, extract the response, assert stuff on it
+		Response response = given()
+				.filter(new RequestLoggingFilter()) //Log the request
+				.filter(new ResponseLoggingFilter()) //Log the response
+				.contentType("application/json")
+				.body(loginJson)
+				.when().post("http://localhost:8080/auth/login")
+				.then().extract().response();
+
+		//Assert 200 ok, assert session was set, assert user info is correct
+		response.then()
+				.statusCode(200)
+				.body("username", equalTo("username"))
+				.cookie("JSESSIONID", notNullValue());
+
+
+	}
 
 }
