@@ -1,6 +1,8 @@
 package com.revature.SnailMailBE.services;
 
+import com.revature.SnailMailBE.daos.MailDAO;
 import com.revature.SnailMailBE.models.Mail;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +14,29 @@ import java.util.List;
 @Service //Make this class a bean so we can inject it in the controller
 public class MailService {
 
+    //Autowire the DAO so we can use it's methods
+    private MailDAO mailDAO;
+
+    @Autowired
+    public MailService(MailDAO mailDAO) {
+        this.mailDAO = mailDAO;
+    }
+
     public List<Mail> getInbox(){
 
         //Imagine we sent a request to the database to get this info
-        List<Mail> inbox = List.of(
-                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I am a snail"),
-                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I have a shell"),
-                new Mail("slug@snailmail.com", "Hey", "me@snailmail.com", "I am a slug"),
-                new Mail("clam@snailmail.com", "Hey", "me@snailmail.com", "...")
-        );
+//        List<Mail> inbox = List.of(
+//                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I am a snail"),
+//                new Mail("snail@snailmail.com", "Hey", "me@snailmail.com", "I have a shell"),
+//                new Mail("slug@snailmail.com", "Hey", "me@snailmail.com", "I am a slug"),
+//                new Mail("clam@snailmail.com", "Hey", "me@snailmail.com", "...")
+//        );
+
+        //Now instead of hardcoding, we'll call directly to the DAO
+        List<Mail> inbox = mailDAO.findAll();
 
         //Imagine we either get a list of mail or an empty list
-        if(inbox == null){
+        if(inbox.isEmpty()){
             return null; //emulates an empty inbox
         } else {
             return inbox;
@@ -47,9 +60,7 @@ public class MailService {
         }
 
         //Imagine we send a request to the database here to "send" the mail
-
-        //Return the valid mail back to the controller
-        return mail;
+        return mailDAO.save(mail); //save() also returns the saved object
 
     }
 
