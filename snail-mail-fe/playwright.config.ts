@@ -9,7 +9,7 @@ export default defineConfig({
     {name: "Webkit", use: {browserName: "webkit"}}
   ],
   use: { 
-    browserName: 'chromium', //or firefox or webkit! 
+    //browserName: 'chromium', 'firefox', 'webkit', //or firefox or webkit! 
     headless: true, 
     screenshot: 'only-on-failure', 
     baseURL: 'http://localhost:5173' //base URL for React vite projects 
