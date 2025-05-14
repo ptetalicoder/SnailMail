@@ -12,7 +12,7 @@ export default defineConfig({
     browserName: 'chromium', //or firefox or webkit! 
     headless: true, 
     screenshot: 'only-on-failure', 
-    baseURL: 'http://localhost:5177' //base URL for React vite projects 
+    baseURL: 'http://localhost:5173' //base URL for React vite projects 
   }, 
 
 }); 
