@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 //test 1: Successful GET request
-test(" Successful GET request to mail", async ({ request }) => {
+test(" Successful GET request to mail", async ({ request  }) => {
     const response = await request.get('http://localhost:8080/mail')
     expect(response.status()).toBe(200)
     const inbox = await response.json()
@@ -34,9 +34,13 @@ test("Failure GET request to /mail (404)", async ({ request }) => {
 })
 
 //test 4: Text on screen when there is no mail in the inbox
-test("Text on screen when there is no mail in the in box", async ({ page }) => {
-    await page.goto('/') //Go to inbox.tsx
-    await expect(page.getByText("No Mail! You're all caught up!")).toBeVisible()
+test.describe('Inbox', () => {
+    test("Text on screen when there is no mail in the in box", async ({ page, request }) => {
+        await request.delete('http://localhost:8080/mail') //Delete all mail in the inbox
+        await page.goto('/') //Go to inbox.tsx
+        console.log(await page.content())
+        await expect(page.getByText("No Mail! You're all caught up!")).toBeVisible({timeout: 10000})
+    })
 })
 
 //test 5: Compose component opens when button is clicked

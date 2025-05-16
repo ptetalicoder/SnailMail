@@ -1,6 +1,7 @@
 package com.revature.SnailMailBE.services;
 
 import com.revature.SnailMailBE.daos.MailDAO;
+import com.revature.SnailMailBE.models.ChangePasswordDTO;
 import com.revature.SnailMailBE.models.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,15 @@ public class MailService {
         //Imagine we send a request to the database here to "send" the mail
         return mailDAO.save(mail); //save() also returns the saved object
 
+    }
+
+    public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+        return true;
+    }
+
+    public void deleteAllMail() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAllMail'");
     }
 
 }

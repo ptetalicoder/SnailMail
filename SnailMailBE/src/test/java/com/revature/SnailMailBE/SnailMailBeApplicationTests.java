@@ -1,5 +1,6 @@
 package com.revature.SnailMailBE;
 
+import com.revature.SnailMailBE.models.ChangePasswordDTO;
 import com.revature.SnailMailBE.models.Mail;
 import com.revature.SnailMailBE.services.MailService;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -177,5 +178,4 @@ class SnailMailBeApplicationTests {
 		//This is what it means to "test logic in isolation"
 
 	}
-
 }

@@ -62,4 +62,10 @@ public class MailController {
         return ResponseEntity.badRequest().body(e); //400 status code
     }
 
+    @DeleteMapping("/mail")
+    public ResponseEntity<?> deleteAllMail(){
+        mailService.deleteAllMail();
+        return ResponseEntity.ok().build();
+    }
+
 }
